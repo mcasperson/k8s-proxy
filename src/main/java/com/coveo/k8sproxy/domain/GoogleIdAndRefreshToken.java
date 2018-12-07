@@ -13,6 +13,10 @@ public class GoogleIdAndRefreshToken
     private long expiresIn;
     @JsonProperty("id_token")
     private String idToken;
+    @JsonProperty("error")
+    private String error;
+    @JsonProperty("error_description")
+    private String errorDescription;
 
     public long getExpiresIn()
     {
@@ -60,5 +64,21 @@ public class GoogleIdAndRefreshToken
     {
         setExpiresIn(expiresIn);
         return this;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getErrorDescription() {
+        return errorDescription;
+    }
+
+    public void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
     }
 }

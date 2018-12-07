@@ -118,6 +118,10 @@ public class K8sReverseProxy implements DisposableBean
             writeLock.lock();
             googleToken = googleTokenRetriever.postForRefreshAndAccessToken(code, request.getRequestURL().toString());
 
+            if (googleToken.getError() != null) {
+                throw new RuntimeException("Response was an error\n" + googleToken.getError() + "\n" + googleToken.getErrorDescription());
+            }
+
             jweToken = jweTokenRetriever.fetchJweToken(googleToken.getIdToken());
 
             try (PrintWriter out = new PrintWriter(REFRESH_TOKEN_FILENAME)) {

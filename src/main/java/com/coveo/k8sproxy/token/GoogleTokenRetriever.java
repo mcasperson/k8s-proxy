@@ -73,9 +73,8 @@ public class GoogleTokenRetriever
         callbackRequest.setEntity(new UrlEncodedFormEntity(parameters, StandardCharsets.UTF_8));
 
         try (CloseableHttpResponse callbackResponse = httpClient.execute(callbackRequest)) {
-            GoogleIdAndRefreshToken googleToken = objectMapper.readValue(IOUtils.toString(callbackResponse.getEntity()
-                                                                                                          .getContent(),
-                                                                                          StandardCharsets.UTF_8),
+            final String response = IOUtils.toString(callbackResponse.getEntity().getContent(), StandardCharsets.UTF_8);
+            GoogleIdAndRefreshToken googleToken = objectMapper.readValue(response,
                                                                          GoogleIdAndRefreshToken.class);
             logger.info("New id token retrieved.");
             return googleToken;
