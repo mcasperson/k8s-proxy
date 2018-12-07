@@ -158,13 +158,6 @@ public class K8sReverseProxy implements DisposableBean
         }
     }
 
-    @RequestMapping("/ui")
-    public void uiRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        response.sendRedirect(request.getRequestURL().substring(0, request.getRequestURL().length() - 3)
-                + "/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/");
-    }
-
     @RequestMapping("/**")
     public void reverseProxy(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
