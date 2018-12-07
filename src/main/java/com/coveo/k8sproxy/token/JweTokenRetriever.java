@@ -39,15 +39,13 @@ public class JweTokenRetriever
     public JweToken fetchJweToken(String googleIdToken) throws IOException
     {
         CsrfToken csrfToken;
-        HttpGet csrfRequest = new HttpGet(k8sClusterEndpoint
-                + "/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/api/v1/csrftoken/login");
+        HttpGet csrfRequest = new HttpGet(k8sClusterEndpoint + "/api/v1/csrftoken/login");
         csrfRequest.setHeader(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + googleIdToken);
         try (CloseableHttpResponse csrfResponse = httpClient.execute(csrfRequest)) {
             csrfToken = objectMapper.readValue(csrfResponse.getEntity().getContent(), CsrfToken.class);
         }
 
-        HttpPost jweRequest = new HttpPost(k8sClusterEndpoint
-                + "/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/api/v1/login");
+        HttpPost jweRequest = new HttpPost(k8sClusterEndpoint + "/api/v1/login");
         jweRequest.setHeader(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + googleIdToken);
         jweRequest.setHeader("x-csrf-token", csrfToken.getToken());
         jweRequest.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
